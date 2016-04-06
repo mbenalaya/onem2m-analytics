@@ -201,8 +201,8 @@ public class IoTSparkAsServiceSample implements Serializable {
 	    // Create the context with 2 seconds batch size
 	    JavaStreamingContext jssc = new JavaStreamingContext(jsc, Durations.seconds(interval));
 	    
-	    jssc.checkpoint("hdfs://9.124.102.159:9000/application/DataCollectionEngine");
-	    //jssc.checkpoint(".");
+	    //jssc.checkpoint("hdfs://9.124.102.159:9000/application/DataCollectionEngine");
+	    jssc.checkpoint(".");
 	    
 	    // Create direct MQTT stream with topic
 	    JavaReceiverInputDStream<String> messages = MQTTUtils.createStream(jssc, brokerUrl, mqtopic, appID, apiKey, authToken);
@@ -216,21 +216,15 @@ public class IoTSparkAsServiceSample implements Serializable {
 	            	String deviceType = parts[0].split("/")[2];	// DeviceType
 					String deviceId = parts[0].split("/")[4];	// DeviceId
 		        	
-		        	/**
-					 * 
-					 * Input:: 
-					 * 
-					 * 	iot-2/type/SampleDT/id/RasPi01/evt/blink/fmt/json {"ts":"2015-12-12T20:50:45.159+0530","d":{"name":"Windows_7:6.1:amd64","cpu":1.3,"mem":20125}}
-					 * 
-					 * Output::
-					 * 
-					 * Key - SampleDT
-					 * value - (RasPi01, {"ts":"2015-12-12T20:50:45.159+0530","d":{"name":"Windows_7:6.1:amd64","cpu":1.3,"mem":20125}})
-					 */
 		        	return new Tuple2(deviceId, new IoTEvent(deviceType, deviceId, parts[1]));
 	              }
 	     });
 	
+	    /**
+	     * Output will be like the following,
+	     * 
+	     * (Device01,State [prediction={"wzscore":0.0,"name":"datacenter","temperature":17.47,"forecast":17.53,"zscore":-0.060000000000002274}])
+	     */
 	    JavaPairDStream<String, State> updatedLines =  mappedStream.updateStateByKey(ENTRY_EXTRACTOR);
 	   
 	    updatedLines.print();

@@ -7,12 +7,9 @@ import java.io.FileReader;
 import java.io.Serializable;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.Level;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.kohsuke.args4j.CmdLineException;
-
-import org.apache.wink.json4j.JSONObject;
 
 import com.ibm.iot.iotdatagenerator.CommandLineParser;
 
@@ -28,8 +25,6 @@ public class IoTDataGenerator implements Serializable {
 
   }
   
-  
-
   /**
    * @param args
    */
@@ -52,24 +47,10 @@ public class IoTDataGenerator implements Serializable {
 	       // if no more lines the readLine() returns null
 	       while ((line = br.readLine()) != null) {
 	           //send line
-	           int qos = 0;
-             String topic = mqtopic;
-
-             try {
-                 JSONObject msg = new JSONObject(line);
-                 double temperature = msg.getDouble("temperature");
-                 double forecast = msg.getDouble("forecast");
-                 double zscore = msg.getDouble("zscore");
-                 double wzscore = msg.getDouble("wzscore");
-                 if (Math.abs(zscore) > 3.0 && Math.abs(wzscore) > 3.0) {
-                     topic = topic.replaceAll("/fmt/", "-alert/fmt/");
-                 }
-             } catch (Exception e) {
-             } 
-             
+	         int qos = 0;
              System.out.println(line);
-	         mqttClient.publish(topic,qos,line.getBytes());
-	         Thread.sleep(4000); // Wait 4 seconds
+	         mqttClient.publish(mqtopic,qos,line.getBytes());
+	         Thread.sleep(2000); // Wait 2 seconds
 	       }
 	       br.close();
 	   } catch (MqttException me) {

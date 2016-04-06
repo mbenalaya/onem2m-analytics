@@ -66,6 +66,7 @@ public abstract class IoTPrediction implements Serializable {
 
     public static java.lang.String post(java.lang.String pURL, java.lang.String payload) throws ClientProtocolException, IOException {
 
+    	System.out.println("payload --> " + payload);
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(pURL);
         StringEntity input = new StringEntity(payload);
