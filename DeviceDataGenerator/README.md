@@ -28,6 +28,8 @@ Where `options` are:
      --pwd VAL      : Device Password
      --uri VAL      : Watson IoT Platform Server URI
 
+Refer to Watson IoT Platform [documentation](http://iotf.readthedocs.org/en/latest/devices/mqtt.html) for more information about the parameters and how to form them.
+
 ### Example Invocation
 
     java -jar IoTDataGenerator-1.0.0-SNAPSHOT.jar --id d:doi0nz:iotsample-deviceType:Device01 --mqtopic iot-2/evt/temperature/fmt/json --pwd password --uri ssl://doi0nz.messaging.internetofthings.ibmcloud.com:8883 --user use-token-auth --datapath ./testDataSet
