@@ -1,17 +1,14 @@
 # Spark Streaming application
 
-The Spark Streaming application subscribes to the device events and make a ReST call to the SPSS model deployed on Predictive Analysis service to detect a temperature change before it hits the danger zone. 
+The Spark Streaming application subscribes to IoT device events in realtime and make a ReST call to the SPSS model deployed on Predictive Analysis service to detect a temperature change before it hits the danger zone. And publishes the result back to Watson IoT Platform, so that RTI can alert if required. 
 
-When real time data reading is received, the Spark streaming application gets the next few forecasts from Predictive Analytics service. It also calculates a score to indicate the degree of difference the actual reading compared to the forecast in its place obtained previously based on the values before it. Since the forecast is a trend indicator, a bigger difference than the normal range would indicate a sudden change of value.
-
-Also, the Spark application publishes the result back to Watson IoT Platform such that RTI can alert if required. 
-
+Also, The application uses few parameters like, window and cycle to control the number of invocation to Predictive Analytics service. For every invocation, the model will give 50 predictions based on current data set and Spark application will use this data to indicate the degree of difference between the actual reading and the forecasted value.  
 
 ## Usage
 
 This application is designed to run on the Apache Spark as a service on Bluemix. Use the following notebook code to run the application.
 
-code :: java
+
 
      %AddJar https://github.com/sathipal/spark-streaming-mqtt-with-security_2.10-1.3.0/releases/download/0.0.1/spark-streaming-mqtt-security_2.10-1.3.0-0.0.1.jar
      %AddJar https://www.dropbox.com/s/3n8yumh6tr6r294/IoTSparkAsServiceSample-2.0.0-SNAPSHOT-jar-with-dependencies.jar?dl=1
