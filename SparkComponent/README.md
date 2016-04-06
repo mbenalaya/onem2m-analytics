@@ -1,30 +1,45 @@
-# mqttKafkaBridge
+# Spark Streaming application
 
-Bridge which consumes MQTT messages and republishes them on Kafka on the same topic.
+The Spark Streaming application subscribes to the device events and make a ReST call to the SPSS model deployed on Predictive Analysis service to detect a temperature change before it hits the danger zone. 
+
+When real time data reading is received, the Spark streaming application gets the next few forecasts from Predictive Analytics service. It also calculates a score to indicate the degree of difference the actual reading compared to the forecast in its place obtained previously based on the values before it. Since the forecast is a trend indicator, a bigger difference than the normal range would indicate a sudden change of value.
+
+Also, the Spark application publishes the result back to Watson IoT Platform such that RTI can alert if required. 
+
 
 ## Usage
 
-    $ java -jar mqttKafkaBridge.jar [options...]
+This application is designed to run on the Apache Spark as a service on Bluemix. Use the following notebook code to run the application.
 
-Where `options` are:
+code :: java
 
-    --help (-h)  : Show help
-    --id VAL     : MQTT Client ID
-    --topics VAL : MQTT topic filters (comma-separated)
-    --uri VAL    : MQTT Server URI
-    --zk VAL     : Zookeeper connect string
+     %AddJar https://github.com/sathipal/spark-streaming-mqtt-with-security_2.10-1.3.0/releases/download/0.0.1/spark-streaming-mqtt-security_2.10-1.3.0-0.0.1.jar
+     %AddJar https://www.dropbox.com/s/3n8yumh6tr6r294/IoTSparkAsServiceSample-2.0.0-SNAPSHOT-jar-with-dependencies.jar?dl=1
+     
+     import com.ibm.iot.iotspark.IoTSparkAsServiceSample
+     
+     //Watson IoT Platform related parameters
+     IoTSparkAsServiceSample.setConfig("appid","a:coi0nz:sample123tg")
+     IoTSparkAsServiceSample.setConfig("uri","ssl://coi0nz.messaging.internetofthings.ibmcloud.com:8883")
+     IoTSparkAsServiceSample.setConfig("mqtopic","iot-2/type/+/id/+/evt/temperature/fmt/+")
+     IoTSparkAsServiceSample.setConfig("apikey","a-coi0nz-g1appit53j")
+     IoTSparkAsServiceSample.setConfig("authtoken","TQW4aawpx7u4Fqkbhr")
+     
+     // Predictive Service related parameters
+     IoTSparkAsServiceSample.setConfig("window","10")
+     IoTSparkAsServiceSample.setConfig("cycle","10")
+     IoTSparkAsServiceSample.setConfig("predictive-service-url","https://palbyp.pmservice.ibmcloud.com/pm/v1/score/anamolydetection?accesskey=hnFUDkIzzsGe0YVE+5juW/C0vIgU0rxsMqy4S6I/6cCPnygUVORP2EmOkIkbyyXqHxGxQ3pIogjgEOjN0TGDTcL0h32gVzPkwMbmHXNpi+F3907R6Hs2aoSILF3lpXYVTyyJ2wQjjJXz+oZYxTKsn7GaDzwM1qkFBxscCMvJRHk=")
+     
+     // Start the Streaming job
+     IoTSparkAsServiceSample.startStreaming(sc, 2)
 
-If you don't specify any command-line options, it uses the following defaults:
+Where,
 
-    id:      mqttKafkaBridge
-    topics:  '#' (all topics)
-    uri:     tcp://localhost:1883
-    zk:      localhost:2181
-
-***Note***: you can't run more than one bridge using the default settings, since two clients cannot connect to the same MQTT server with the same client ID. Additionally, you will get multiple messages published to Kafka for each message published to MQTT. If you wish to run multiple instances, you'll need to divide up the topics among the instances, and make sure to give them different IDs.
-
-## Logging
-`mqttKafkaBridge` uses [log4j](http://logging.apache.org/log4j/2.x/) for logging, as do the [Paho](http://www.eclipse.org/paho/) and [Kafka](http://kafka.apache.org/) libraries it uses. There is a default `log4j.properties` file packaged with the jar which simply prints all messages of level `INFO` or greater to the console. If you want to customize logging, simply create your own `log4j.properties` file, and start up `mqttKafkaBridge` as follows:
-
-    $ java -Dlog4j.configuration=file:///path/to/log4j.properties -jar mqttKafkaBridge.jar [options...]
-
+    appid    : MQTT Client ID for this application
+    uri      : Watson IoT Platform organization
+    mqtopic  : MQTT Topic to subscribe to IoT device events
+    apikey   : Watson IoT Platform API Key
+    authtoken: Watson IoT Platform Auth token
+    Window   : WZScore window size. It means the WZScore will calculate the local zscore based on the window size. Since local zscore is only based on this window size, it will be more sensitive to the data changes. For example, a value of 10 will calculate the standard deviation based on last 10 data entries
+    cycle    : Controls Zscore window. The model will give 50 predictions based on current data set, the further prediction goes, the un-accurate the prediction will be. so the cycle will let the user how many prediction will be used. For example, a cycle value of 20 means the code will only use 20 prediction entries from each prediction run as forecast.
+    
