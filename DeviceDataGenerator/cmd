@@ -1,0 +1,1 @@
+java -jar IoTDataGenerator-1.0.0-SNAPSHOT.jar --id d:o672lp:IoTAnalytic:Client67890 --uri tcp://o672lp.meaging.internetofthings.ibmcloud.com:1883 --mqtopic iot-2/evt/temperature/fmt/json --user use-token-auth --pwd Client67890 --datapath ./testDataSet
