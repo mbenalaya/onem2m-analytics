@@ -25,4 +25,5 @@ Recipe
 -------------
 
 Refer to the recipe for more information about the Predictive Analytics and the samples.
+
 ----
