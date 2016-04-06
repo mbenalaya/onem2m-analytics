@@ -2,7 +2,6 @@
 
 The Spark Streaming application subscribes to IoT device events in realtime and make a ReST call to the SPSS model deployed on Predictive Analysis service to detect a temperature change before it hits the danger zone. And publishes the result back to Watson IoT Platform, so that RTI can alert if required. 
 
-Also, The application uses few parameters like, window and cycle to control the number of invocation to Predictive Analytics service. For every invocation, the model will give 50 predictions based on current data set and Spark application will use this data to indicate the degree of difference between the actual reading and the forecasted value.  
 
 ## Usage
 
