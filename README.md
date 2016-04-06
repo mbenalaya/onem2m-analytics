@@ -1,6 +1,6 @@
 # iot-predictive-analytics-samples (Update in progress)
-=========================================================
-This project showcases how we can make use of the Predictive Analysis service, available on the IBM Bluemix, to determine the hidden patterns on the events published by IoT devices, on the IBM Watson IoT Platform. 
+
+This project showcases how one can make use of the Predictive Analytics service, available on the IBM Bluemix, to determine the hidden patterns on the events published by IoT devices, on the IBM Watson IoT Platform. 
 
 ----
 
