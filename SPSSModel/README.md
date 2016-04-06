@@ -8,6 +8,3 @@ When real time data reading is received, the Spark streaming job gets the next f
 The score can be used in RTI rule to determine when the alert will be raised. A larger value filters out smaller spikes and dips.
 
 ----
-
-Postman Instruction
--------------------
