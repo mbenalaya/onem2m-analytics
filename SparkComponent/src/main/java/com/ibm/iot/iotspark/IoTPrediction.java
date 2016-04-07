@@ -1,3 +1,15 @@
+/**
+ *****************************************************************************
+ Copyright (c) 2016 IBM Corporation and other Contributors.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+ Contributors:
+ Li Lin - Initial Contribution
+ *****************************************************************************
+ *
+ */
 package com.ibm.iot.iotspark;
 
 import java.io.Serializable;
@@ -20,10 +32,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.wink.json4j.JSONException;
 import org.apache.wink.json4j.JSONObject;
 
+/**
+ * 
+ * A base class that maintains the forecasted scores and reduces the load to the Predictive Analytics service.
+ * The Analytics serive by default returns 50 forecast values, this class stores the forecasted values and
+ * for sometime (configurable using the parameter --cycle) before the next ReST invocation.
+ *
+ */
 @SuppressWarnings("serial")
 public abstract class IoTPrediction implements Serializable {
-	/* comments out the following 2 lines after testing */
- 
 	private String accessURL;
 	
 	/**
@@ -42,31 +59,17 @@ public abstract class IoTPrediction implements Serializable {
     	
     }
     
-    public void writeFile(java.lang.String str, FileChannel fileChannel) throws IOException {
-    	byte [] inputBytes = str.getBytes();
-    	ByteBuffer buffer = ByteBuffer.wrap(inputBytes);
-    	fileChannel.write(buffer);
-    }
-
-    public static java.lang.String get(java.lang.String gURL) throws ClientProtocolException, IOException {
-        HttpClient client = new DefaultHttpClient();
-        HttpGet request = new HttpGet(gURL);
-        HttpResponse response = client.execute(request);
-        BufferedReader rd = new BufferedReader (new InputStreamReader(response.getEntity().getContent()));
-        StringBuilder out = new StringBuilder();
-        java.lang.String line;
-        while ((line = rd.readLine()) != null) {
-        //    System.out.println(line);
-            out.append(line);
-        }
-        System.out.println(out.toString());   //Prints the string content read from input stream
-        rd.close();
-        return out.toString();
-    }
-
+    /**
+     * Makes ReST call to the Predictive Analytics service with the given payload and responds with the predicted score.
+     * 
+     * @param pURL
+     * @param payload
+     * @return
+     * @throws ClientProtocolException
+     * @throws IOException
+     */
     public static java.lang.String post(java.lang.String pURL, java.lang.String payload) throws ClientProtocolException, IOException {
 
-    	System.out.println("payload --> " + payload);
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(pURL);
         StringEntity input = new StringEntity(payload);

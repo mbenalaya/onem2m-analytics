@@ -1,3 +1,17 @@
+/**
+ *****************************************************************************
+ Copyright (c) 2016 IBM Corporation and other Contributors.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+ Contributors:
+ Jenny Wang - Initial Contribution
+ Li Lin - Initial Contribution
+ Sathiskumar Palaniappan - Initial Contribution
+ *****************************************************************************
+ *
+ */
 package com.ibm.iot.iotspark;
 
 import java.io.FileNotFoundException;
@@ -27,6 +41,15 @@ import org.kohsuke.args4j.CmdLineException;
 
 import com.google.common.base.Optional;
 
+/**
+ * 
+ * The Spark Streaming application subscribes to IoT device events in realtime and make a ReST call 
+ * to the SPSS model deployed on Predictive Analysis service to detect a temperature change before 
+ * it hits the danger zone. 
+ * 
+ * And publishes the result back to Watson IoT Platform, so that RTI can alert if required. 
+ *
+ */
 @SuppressWarnings("serial")
 public class IoTSparkAsServiceSample implements Serializable {
 	  static Logger logger = Logger.getLogger(IoTSparkAsServiceSample.class.getName());
@@ -119,6 +142,9 @@ public class IoTSparkAsServiceSample implements Serializable {
 		
 	}
   
+	/**
+	 * UpdateStateBykey function that carries the state over the batchs.  
+	 */
 	private Function2<List<IoTEvent>, Optional<State>, Optional<State>> ENTRY_EXTRACTOR =
 			new Function2<List<IoTEvent>, Optional<State>, Optional<State>>() {
 
@@ -282,6 +308,19 @@ public class IoTSparkAsServiceSample implements Serializable {
   }
 
   /**
+   * Standalone (outside bluemix) users, also the Bluemix users using spark-submit.sh command can use the following command
+   * to run this application.
+   * /root/bin/sparks/spark-1.4.1-bin-hadoop2.4/bin/spark-submit --class com.ibm.iot.iotspark.IoTSparkAsServiceSample 
+   * --master spark://host:7077 --jars IoTSparkAsService/lib/spark-streaming-mqtt-security_2.10-1.3.0.jar 
+   * IoTSparkAsServiceSample-2.0.0-SNAPSHOT-jar-with-dependencies.jar 
+   * --mqtopic iot-2/type/+/id/+/evt/temperature/fmt/+ 
+   * --uri ssl://organizationid.messaging.internetofthings.ibmcloud.com:8883 
+   * --apikey <Your org key> 
+   * --authtoken <Your Auth token>
+   * --appid <application id> 
+   * --window 10 
+   * --cycle 10 
+   * --predictive-service-url "Predictive service url>
    * @param args
    */
    public static void main(String[] args) {

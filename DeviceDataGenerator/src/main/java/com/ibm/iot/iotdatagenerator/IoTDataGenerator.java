@@ -1,3 +1,17 @@
+/**
+ *****************************************************************************
+ Copyright (c) 2016 IBM Corporation and other Contributors.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+ Contributors:
+ Jenny Wang - Initial Contribution
+ Li Lin - Initial Contribution
+ Sathiskumar Palaniappan - Initial Contribution
+ *****************************************************************************
+ *
+ */
 package com.ibm.iot.iotdatagenerator;
 
 import java.io.BufferedReader;
@@ -33,7 +47,7 @@ public class IoTDataGenerator implements Serializable {
        try {
 	       parser = new CommandLineParser();
 	       parser.parse(args);
-	       mqttClient.connect(parser.getServerURI(), parser.getClientId(), parser.getUser(), parser.getPassword());
+	       mqttClient.connect(parser.getServerURI(), parser.getClientId(), "use-token-auth", parser.getPassword());
 	       mqtopic = parser.getMqttTopic();
 	       System.out.println("MQTT publish topics:" + mqtopic);
 	
@@ -50,7 +64,7 @@ public class IoTDataGenerator implements Serializable {
 	         int qos = 0;
              System.out.println(line);
 	         mqttClient.publish(mqtopic,qos,line.getBytes());
-	         Thread.sleep(2000); // Wait 2 seconds
+	         Thread.sleep(4000); // Wait 4 seconds
 	       }
 	       br.close();
 	   } catch (MqttException me) {
