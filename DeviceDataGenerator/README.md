@@ -63,7 +63,7 @@ You must have installed the [Eclipse Maven plugin](http://www.eclipse.org/m2e/),
 
 ----
 
-### Building the sample - Required if you want to run the samples outside of Eclipse
+### Build & Run the sample outside eclipse
 
 * * Clone the iot-predictive-samples project using git clone as follows,
 
@@ -76,6 +76,10 @@ You must have installed the [Eclipse Maven plugin](http://www.eclipse.org/m2e/),
 * Run the maven build as follows,
 
     `mvn clean package`
+
+* Run the maven build as follows,    
+
+    `mvn exec:java -Dexec.mainClass="com.ibm.iot.iotdatagenerator.IoTDataGenerator" -Dexec.args="--id <ClientID> --uri ssl://<Orgid>.messaging.internetofthings.ibmcloud.com:8883 --pwd <Token>  --datapath ./testDataSet"`
 
 ----
 
