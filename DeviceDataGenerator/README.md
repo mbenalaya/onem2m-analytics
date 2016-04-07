@@ -24,7 +24,6 @@ Where `options` are:
      --help (-h)    : Show help
      --id VAL       : Watson IoT Platform Client ID
      --mqtopic VAL  : Watson IoT Platform MQTT topic
-     --user VAL     : Device UserName
      --pwd VAL      : Device Password
      --uri VAL      : Watson IoT Platform Server URI
 
