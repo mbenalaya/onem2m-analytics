@@ -1,6 +1,6 @@
 # Spark Streaming application
 
-The Spark Streaming application subscribes to IoT device events in realtime and make a ReST call to the SPSS model deployed on Predictive Analysis service to detect a temperature change before it hits the danger zone. And publishes the result back to Watson IoT Platform, so that RTI can alert if required. 
+The Spark Streaming application subscribes to IoT device events in realtime and make a REST call to the SPSS model deployed on Predictive Analysis service to detect a temperature change before it hits the danger zone. And publishes the result back to Watson IoT Platform, so that RTI can alert if required. 
 
 ### Build & Run the sample outside eclipse
 
@@ -57,8 +57,8 @@ Where,
     mqtopic  : MQTT Topic to subscribe to IoT device events
     apikey   : Watson IoT Platform API Key
     authtoken: Watson IoT Platform Auth token
-    Window   : WZScore window size. It means the WZScore will calculate the local zscore based on the window size. Since local zscore is only based on this window size, it will be more sensitive to the data changes. For example, a value of 10 will calculate the standard deviation based on last 10 data entries
-    cycle    : Controls Zscore window. The model will give 50 predictions based on current data set, the further prediction goes, the un-accurate the prediction will be. so the cycle will let the user how many prediction will be used. For example, a cycle value of 20 means the code will only use 20 prediction entries from each prediction run as forecast.
+    Window   : WZScore window size. It means the WZScore will calculate the local ZScore based on the window size. Since local ZScore is only based on this window size, it will be more sensitive to the data changes. For example, a value of 10 will calculate the standard deviation based on last 10 data entries
+    cycle    : Controls ZScore window. The model will give 50 predictions based on current data set, the further prediction goes, the un-accurate the prediction will be. so the cycle will let the user how many prediction will be used. For example, a cycle value of 20 means the code will only use 20 prediction entries from each prediction run as forecast.
     
 **Note:** In case if you want to run the application with your custom (modified) jar, modify the URL "https://github.com/ibm-messaging/iot-predictive-analytics-samples/releases/download/0.0.1/IoTSparkAsServiceSample-1.0.0-SNAPSHOT.jar" with your custom build jar url.
 
@@ -66,7 +66,7 @@ Where,
 
 ### Running the sample using spark-submit script in Bluemix
 
-Follow the stpes [present here](https://console.ng.bluemix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#using_spark-submit) to run the application in Bluemix but outside of Notebook.
+Follow the steps [present here](https://console.ng.bluemix.net/docs/services/AnalyticsforApacheSpark/index-gentopic3.html#using_spark-submit) to run the application in Bluemix but outside of Notebook.
 
 ----
 
