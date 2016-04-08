@@ -2,7 +2,7 @@
 
 The Spark Streaming application subscribes to IoT device events in realtime and make a REST call to the SPSS model deployed on Predictive Analysis service to detect a temperature change before it hits the danger zone. And publishes the result back to Watson IoT Platform, so that RTI can alert if required. 
 
-### Build & Run the sample outside eclipse
+### Building the sample
 
 * Clone the iot-predictive-samples project using git clone as follows,
 
