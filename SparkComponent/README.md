@@ -4,7 +4,7 @@ The Spark Streaming application subscribes to IoT device events in realtime and 
 
 ### Build & Run the sample outside eclipse
 
-* * Clone the iot-predictive-samples project using git clone as follows,
+* Clone the iot-predictive-samples project using git clone as follows,
 
     `git clone https://github.com/ibm-messaging/iot-predictive-analytics-samples.git`
     
