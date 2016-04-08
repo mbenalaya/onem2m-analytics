@@ -340,7 +340,8 @@ public class IoTSparkAsServiceSample implements Serializable {
     	   int index = 0;
     	   
     	   /**
-    	    * The Spark service submit script in Bluemix passes an extra parameters, and hence we need
+    	    * The Spark service submit script in Bluemix passes an extra parameters, and hence we 
+    	    * need
     	    * to skip the first one.
     	    */
     	   if(!args[0].startsWith("--")) {

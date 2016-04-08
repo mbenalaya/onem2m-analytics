@@ -16,6 +16,7 @@ package com.ibm.iot.iotspark;
 
 import java.security.GeneralSecurityException;
 import java.sql.Timestamp;
+import java.util.Random;
 
 import javax.net.ssl.SSLContext;
 
@@ -32,7 +33,8 @@ import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 
 public class SimpleClient implements MqttCallback {
-	
+
+	Random random = new Random();
 	/**
 	 * Let us create a singleton SimpleClient for every worker node.
 	 * That will send the result back to the Watson IoT Platform
@@ -73,7 +75,8 @@ public class SimpleClient implements MqttCallback {
 		}
 		
 		System.out.println("serverURI:" + serverURI);
-		clientId = clientId + MqttClient.generateClientId();
+		//clientId = clientId + MqttClient.generateClientId();
+		clientId = clientId + random.nextInt(100);
 		System.out.println("clientId:" + clientId);
                 
 		try {
