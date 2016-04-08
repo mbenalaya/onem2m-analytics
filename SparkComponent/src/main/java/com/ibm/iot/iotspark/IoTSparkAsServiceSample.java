@@ -151,20 +151,31 @@ public class IoTSparkAsServiceSample implements Serializable {
 		@Override
 		public Optional<State> call(List<IoTEvent> readings, Optional<State> predictionState)
 				throws Exception {
-			
+
+			/**
+			 * Return if there is no new data from the device
+			 */
 			if(readings == null || readings.size() == 0) {
 				return predictionState;
 			}
 			
-			State state = null;
+			State state = predictionState.orNull();
 			try {
+				/**
+				 * Create the state if its the first time and not defined already
+				 */
+				if(state == null) {
+					state = predictionState.or(new State(zScoreWindow, wZScoreWindow, predictiveServiceURL));
+				}
 				
-				state = predictionState.or(new State(zScoreWindow, wZScoreWindow, predictiveServiceURL));
-				
+				/**
+				 * If there are multiple events (device sends too fast compared to the Spark Streaming job batch interval),
+				 * loop through one by one and predict the score
+				 */
 				for(IoTEvent event : readings) {
 					String forecast = state.getPrediction().predict(event.getEvent());
 					if (forecast != null ) { 
-						int qos = 0;
+						int qos = 2;
 						/**
 						 * Let us use the following topic to publish the predicted score, so that
 						 * we can view the same in RTI
@@ -245,7 +256,7 @@ public class IoTSparkAsServiceSample implements Serializable {
 		        	return new Tuple2(deviceId, new IoTEvent(deviceType, deviceId, parts[1]));
 	              }
 	     });
-	
+	    
 	    /**
 	     * Output will be like the following,
 	     * 
@@ -328,6 +339,10 @@ public class IoTSparkAsServiceSample implements Serializable {
        try {
     	   int index = 0;
     	   
+    	   /**
+    	    * The Spark service submit script in Bluemix passes an extra parameters, and hence we need
+    	    * to skip the first one.
+    	    */
     	   if(!args[0].startsWith("--")) {
     		   index = 1;
     	   }
@@ -351,7 +366,7 @@ public class IoTSparkAsServiceSample implements Serializable {
             * The Spart streaming MQTT util will require the Watson IoT Platform details so that it can receive the data
             * from Watson IoT Platform.
             */
-           sample.runPrediction(parser.getMqttTopic(), parser.getServerURI(), parser.getAppId(), parser.getApiKey(), parser.getAuthToken(), null, 2);
+           sample.runPrediction(parser.getMqttTopic(), parser.getServerURI(), parser.getAppId(), parser.getApiKey(), parser.getAuthToken(), null, 4);
        } catch (FileNotFoundException fe) {
            fe.printStackTrace(System.err);
        } catch (MqttException e) {

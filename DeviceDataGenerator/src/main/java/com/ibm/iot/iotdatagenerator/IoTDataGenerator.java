@@ -61,7 +61,7 @@ public class IoTDataGenerator implements Serializable {
 	       // if no more lines the readLine() returns null
 	       while ((line = br.readLine()) != null) {
 	           //send line
-	         int qos = 0;
+	         int qos = 2;
              System.out.println(line);
 	         mqttClient.publish(mqtopic,qos,line.getBytes());
 	         Thread.sleep(4000); // Wait 4 seconds

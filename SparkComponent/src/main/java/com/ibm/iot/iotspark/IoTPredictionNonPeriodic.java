@@ -32,7 +32,7 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
 	private int count = 0;
 	private String pdt;
 
-    public  IoTPredictionNonPeriodic() {
+    IoTPredictionNonPeriodic() {
     	System.out.println("Creating new instance of IoTPredictionNonPeriodic");
     }
 
@@ -57,7 +57,7 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
      */
     public  void load(int number, int size) throws FileNotFoundException, JSONException, Exception {
         try {
-	        InputStream dataStream = this.getClass().getResourceAsStream("/historicaldata.json");
+        	InputStream dataStream = this.getClass().getResourceAsStream("/historicaldata.json");
 	        data = new JSONObject(dataStream);
 		    windowsize = size;
 		    IoTZScore.setWindowSize(size);
@@ -74,7 +74,6 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
         try {
 	        JSONArray ja = (JSONArray) data.get("data");
 	        int snum = ja.length();
-	
 	        JSONArray na = new JSONArray();
 	        //na.put(name);
 	        na.put(d);
