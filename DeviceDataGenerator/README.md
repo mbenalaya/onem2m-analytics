@@ -29,7 +29,7 @@ We need these details to connect the device to IBM Watson IoT Platform.
 
 ### Usage
 
-    $ java -jar IoTDataGenerator-1.0.0-SNAPSHOT.jar [options...]
+    $ `mvn exec:java -Dexec.mainClass="com.ibm.iot.iotdatagenerator.IoTDataGenerator" -Dexec.args=" [options...]"
 
 Where `options` are:
 
@@ -44,7 +44,7 @@ Refer to Watson IoT Platform [documentation](http://iotf.readthedocs.org/en/late
 
 ### Example Invocation
 
-    java -jar IoTDataGenerator-1.0.0-SNAPSHOT.jar --id <clientID> --mqtopic iot-2/evt/temperature/fmt/json --pwd password --uri ssl://<orgid>.messaging.internetofthings.ibmcloud.com:8883 --datapath ./testDataSet
+    `mvn exec:java -Dexec.mainClass="com.ibm.iot.iotdatagenerator.IoTDataGenerator" -Dexec.args="--id <ClientID> --uri ssl://<Orgid>.messaging.internetofthings.ibmcloud.com:8883 --pwd <Token>  --datapath ./testDataSet"`
 
 
 ### Build & Run the sample using Eclipse
@@ -57,7 +57,7 @@ You must have installed the [Eclipse Maven plugin](http://www.eclipse.org/m2e/),
     
 * Import the **DeviceDataGenerator** project into eclipse using the File->Import option in eclipse.
 
-* Build and Run the IoTDataGenerator sample by right clicking on the project and selecting "Run as" option.
+* Build and Run the IoTDataGenerator sample by right clicking on the project and selecting "Run as" option. Remember to pass the options to connect to Watson IoT Platform.
 
 * Observe that the device connects to Watson IoT Platform and publishes events.
 
