@@ -9,6 +9,8 @@ Design and Architecture
 
 Following are the list of components used in this project,
 
+![Alt text](./high-level-diagram.PNG?raw=true "High Level Architecture")
+
 * [Device component](https://github.com/ibm-messaging/iot-predictive-analytics-samples/tree/master/DeviceDataGenerator) - publishes the temperature events to the IBM Watson IoT Platform for every 2 seconds.
 
 * [Spark streaming component](https://github.com/ibm-messaging/iot-predictive-analytics-samples/tree/master/SparkComponent) - Multiple receivers running in the Apache Spark service subscribes to these events and make a ReST call to the SPSS model deployed on Predictive Analysis
