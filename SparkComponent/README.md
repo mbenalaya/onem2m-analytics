@@ -1,6 +1,6 @@
 # Spark Streaming application
 
-The Spark Streaming application reads the sensor events from Watson IoT Platform, invokes the Predictive Analytics service with the nsensor values in realtime, gets the next few forecasts from Predictive Analytics service and then calculates the z-score (aka, a standard score indicates how many standard deviations an element is from the mean) to indicate the degree of difference in the actual reading compared to the forecast readings.
+The Spark Streaming application reads the sensor events from Watson IoT Platform, invokes the Predictive Analytics service with the sensor values in realtime, gets the next few forecasts from Predictive Analytics service and then calculates the z-score (aka, a standard score indicates how many standard deviations an element is from the mean) to indicate the degree of difference in the actual reading compared to the forecast readings.
 
 A z-score can be calculated from the following formula,
 
