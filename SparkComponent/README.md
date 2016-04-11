@@ -16,6 +16,8 @@ Since the forecast is a trend indicator, a bigger difference than the normal ran
 
 The end to end flow using this Spark application is explained in detail in [this recipe ](https://developer.ibm.com/recipes/tutorials/engage-machine-learning-for-detecting-anomalous-behaviors-of-things/).
 
+----
+
 ## Running out of the box sample in Notebook - IBM Bluemix Spark as a service environment
 
 This application is designed to run on the Apache Spark as a service on Bluemix. Use the following notebook code to run the application.
