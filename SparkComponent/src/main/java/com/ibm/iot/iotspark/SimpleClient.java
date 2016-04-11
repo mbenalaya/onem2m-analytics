@@ -64,6 +64,14 @@ public class SimpleClient implements MqttCallback {
 	
 	}
 	
+	public void disconnect() {
+		try {
+			this.mqtt.disconnect().waitForCompletion();
+		} catch(Exception e) { 
+			// ignore 
+		}
+	}
+	
 	/**
      * We need to setup the MQTT client that publishes the predicted score back to Watson IoT Platform,
      * so that the RTI can consume and display

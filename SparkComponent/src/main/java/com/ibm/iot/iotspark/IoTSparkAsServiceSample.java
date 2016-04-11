@@ -222,6 +222,25 @@ public class IoTSparkAsServiceSample implements Serializable {
   		this.apiKey = apiKey;
   		this.authToken = authToken;
   		this.clientId = appID;
+  		
+  		/**
+  		 * Let us verify the Watson IoT and Predictive Analytics service connectivity with the data given 
+  		 */
+  		SimpleClient client = SimpleClient.getSimpleClient();
+
+  		//Connect if its not connected already
+  		System.out.println("Testing the connectivity to Watson IoT Platform ... ");
+		client.connect(serverURI, clientId, apiKey, authToken);
+		client.disconnect();
+		
+		System.out.println("Able to connect to Watson IoT Platform successfully !!");
+		
+		// Testing the connectivity to Predictive Analytics service
+		System.out.println("Testing the connectivity to Predictive Analytics service ... ");
+		if(IoTPredictionNonPeriodic.testScoring(this.predictiveServiceURL) == false) {
+			return;
+			// don't run the job as we are not able to access the Predictive Analytics service
+		}
 		  
 	    Logger.getLogger("org").setLevel(Level.OFF);
 	    Logger.getLogger("akka").setLevel(Level.OFF);

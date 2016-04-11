@@ -35,6 +35,28 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
     IoTPredictionNonPeriodic() {
     	System.out.println("Creating new instance of IoTPredictionNonPeriodic");
     }
+    
+    /**
+     * This is a test method used for verifying the configuration parameters.
+     * @param predictiveServiceURL 
+     * @throws Exception 
+     * @throws JSONException 
+     * @throws FileNotFoundException 
+     */
+    public static boolean testScoring(String predictiveServiceURL) throws FileNotFoundException, JSONException, Exception {
+    	IoTPredictionNonPeriodic p = new IoTPredictionNonPeriodic();
+    	p.load(10, 10);
+    	p.setAccessURL(predictiveServiceURL);
+    	String ret = post(p.getAccessURL(), p.data.toString());
+    	
+    	if(ret.contains("Failed to score")) {
+    		System.out.println("Looks like an issue with the URL, Please check the AccessKey and context id!!");
+    		return false;
+    	} else {
+    		System.out.println("Connection to Predictive Analytics service is proper and able to invoke the service successfully");
+    		return true;
+    	}
+    }
 
     /*
      * Load historical data that required by the modeler and build a JSON object.
