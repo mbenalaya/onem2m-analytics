@@ -26,6 +26,6 @@ Instruction about how to run the sample can be found in their respective directo
 Recipe
 -------------
 
-Refer to the recipe for more information about the Predictive Analytics and the samples.
+Refer to the recipe [Engage Machine Learning for detecting anomalous behaviors of things](https://developer.ibm.com/recipes/tutorials/engage-machine-learning-for-detecting-anomalous-behaviors-of-things/) for more information about the Predictive Analytics and the samples.
 
 ----
