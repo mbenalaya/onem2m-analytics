@@ -10,25 +10,9 @@ where z is the z-score, X is the value of the element, μ is the population mean
 
 Since the forecast is a trend indicator, a bigger difference than the normal range would indicate a sudden change of value. So in a way, the z-score is being used as an indicator of predict an outside the acceptable threshold event happening. Thus the z-score can be used in RTI rule to determine when an alert needs to be raised. A larger value filters out smaller spikes and dips.
 
-### Building the sample
-
-* Clone the iot-predictive-samples project using git clone as follows,
-
-    `git clone https://github.com/ibm-messaging/iot-predictive-analytics-samples.git`
-    
-* Navigate to the SparkComponent project, 
-
-    `cd iot-predictive-analytics-samples\SparkComponent`
-    
-* Run the maven build as follows,
-
-    `mvn clean package`
-
-This will download all required dependencies and starts the building process. Once built, the sample can be located in the target directory. Post the jar IoTSparkAsServiceSample-1.0.0-SNAPSHOT-jar-with-dependencies.jar **on a publicly available URL, for example box, dropbox, etc..** if you want to run it using the Notebook.
-
 ----
 
-## Running the sample in Notebook - IBM Bluemix Spark as a service environment
+## Running out of the box sample in Notebook - IBM Bluemix Spark as a service environment
 
 This application is designed to run on the Apache Spark as a service on Bluemix. Use the following notebook code to run the application.
 
@@ -68,9 +52,34 @@ Where,
     Window   : WZScore window size. It means the WZScore will calculate the local ZScore based on the window size. Since local ZScore is only based on this window size, it will be more sensitive to the data changes. For example, a value of 10 will calculate the standard deviation based on last 10 data entries
     cycle    : Controls ZScore window. The model will give 50 predictions based on current data set, the further prediction goes, the un-accurate the prediction will be. so the cycle will let the user how many prediction will be used. For example, a cycle value of 20 means the code will only use 20 prediction entries from each prediction run as forecast.
     
-**Note:** In case if you want to run the application with your custom (modified) jar, modify the URL "https://github.com/ibm-messaging/iot-predictive-analytics-samples/releases/download/0.0.1/IoTSparkAsServiceSample-1.0.0-SNAPSHOT.jar" with your custom build jar url (say box, dropbox, etc). In case of dropbox, you may have to change the last part of URL (so instead of ‘?dl=0′, you may have to change it to ‘?dl=1′).
+----
+
+### Building and running your own code
+
+You can modify the existing Spark streaming application according to their usecase and run it, its very easy. Follow the steps below to do the same
+
+* Clone the iot-predictive-samples project using git clone as follows,
+
+    `git clone https://github.com/ibm-messaging/iot-predictive-analytics-samples.git`
+    
+* Import the SparkComponentproject project into the Eclipse environment and make necessary changes.
+    
+* Run the maven build either via Eclipse or command line,
+
+    `mvn clean package`
+
+This will download all required dependencies and starts the building process. Once built, the sample can be located in the target directory. Post the jar IoTSparkAsServiceSample-1.0.0-SNAPSHOT-jar-with-dependencies.jar **on a publicly available URL, for example box, dropbox, etc..** if you want to run it using the Notebook.
+
+* Go to the notebook, Modify the cell to upload the Streaming application jar that you built instead of the one available in the Github,
+
+    `%AddJar <URL of IoTSparkAsServiceSample-1.0.0-SNAPSHOT-jar-with-dependencies.jar> -f  `
+
+
+**Note:** Modify the URL of the IoTSparkAsServiceSample jar with the URL where you placed the built application (say box, dropbox, etc). In case of dropbox, you may have to change the last part of URL (so instead of ‘?dl=0′, you may have to change it to ‘?dl=1′)
 
 Also, since the IoTSparkAsServiceSample-1.0.0-SNAPSHOT-jar-with-dependencies.jar is built with all the dependencies, you don’t need to specify the dependencies except for the spark-streaming-mqtt-security_2.10-1.3.0-0.0.1.jar.
+
+* Keep the contents of remaining notebook cell as it is and start the streaming application.
 
 ----
 
