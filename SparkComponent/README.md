@@ -34,16 +34,16 @@ This application is designed to run on the Apache Spark as a service on Bluemix.
      import com.ibm.iot.iotspark.IoTSparkAsServiceSample
      
      //Watson IoT Platform related parameters
-     IoTSparkAsServiceSample.setConfig("appid","a:coi0nz:sample123tg")
-     IoTSparkAsServiceSample.setConfig("uri","ssl://coi0nz.messaging.internetofthings.ibmcloud.com:8883")
+     IoTSparkAsServiceSample.setConfig("appid","a:<orgid>:<unique appid>")
+     IoTSparkAsServiceSample.setConfig("uri","ssl://<orgid>.messaging.internetofthings.ibmcloud.com:8883")
      IoTSparkAsServiceSample.setConfig("mqtopic","iot-2/type/+/id/+/evt/temperature/fmt/+")
-     IoTSparkAsServiceSample.setConfig("apikey","a-coi0nz-g1appit53j")
-     IoTSparkAsServiceSample.setConfig("authtoken","TQW4aawpx7u4Fqkbhr")
+     IoTSparkAsServiceSample.setConfig("apikey","<a-orgaid-apikey>")
+     IoTSparkAsServiceSample.setConfig("authtoken","<AUTHTOKEN>")
      
      // Predictive Service related parameters
      IoTSparkAsServiceSample.setConfig("window","10")
      IoTSparkAsServiceSample.setConfig("cycle","10")
-     IoTSparkAsServiceSample.setConfig("predictive-service-url","https://palbyp.pmservice.ibmcloud.com/pm/v1/score/anamolydetection?accesskey=hnFUDkIzzsGe0YVE+5juW/C0vIgU0rxsMqy4S6I/6cCPnygUVORP2EmOkIkbyyXqHxGxQ3pIogjgEOjN0TGDTcL0h32gVzPkwMbmHXNpi+F3907R6Hs2aoSILF3lpXYVTyyJ2wQjjJXz+oZYxTKsn7GaDzwM1qkFBxscCMvJRHk=")
+     IoTSparkAsServiceSample.setConfig("predictive-service-url","<APPENDED URL>") 
      
      // Start the Streaming job
      IoTSparkAsServiceSample.startStreaming(sc, 2)
@@ -57,6 +57,7 @@ Where,
     authtoken: Watson IoT Platform Auth token
     Window   : WZScore window size. It means the WZScore will calculate the local ZScore based on the window size. Since local ZScore is only based on this window size, it will be more sensitive to the data changes. For example, a value of 10 will calculate the standard deviation based on last 10 data entries
     cycle    : Controls ZScore window. The model will give 50 predictions based on current data set, the further prediction goes, the un-accurate the prediction will be. so the cycle will let the user how many prediction will be used. For example, a cycle value of 20 means the code will only use 20 prediction entries from each prediction run as forecast.
+    predictive-service-url : The URL that invokes the SPSS model deployed. The URL can be obtained by concatenating the url obtained in the predictive analysis service, followed by “score” and context id provided in predictive analytics service followed by “?accesskey=” and the access key. Say for e.g. the URL obtained in Predictive Analysis is “https://fiction.pmservice.ibmcloud.com/pm/v1/” and the context id is “predict” and access key is “xxxxxxxxxxxxx=”, then the modified URL is “https://fiction.pmservice.ibmcloud.com/pm/v1/score/predict?accesskey=xxxxxxxxxx=”
     
 ----
 
