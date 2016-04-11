@@ -1,6 +1,14 @@
 # Spark Streaming application
 
-The Spark Streaming application subscribes to IoT device events in realtime and make a REST call to the SPSS model deployed on Predictive Analysis service to detect a temperature change before it hits the danger zone. And publishes the result back to Watson IoT Platform, so that RTI can alert if required. 
+The Spark Streaming application reads the sensor events from Watson IoT Platform, invokes the Predictive Analytics service with the nsensor values in realtime, gets the next few forecasts from Predictive Analytics service and then calculates the z-score (aka, a standard score indicates how many standard deviations an element is from the mean) to indicate the degree of difference in the actual reading compared to the forecast readings.
+
+A z-score can be calculated from the following formula,
+
+    z = (X - μ) / σ
+
+where z is the z-score, X is the value of the element, μ is the population mean, and σ is the standard deviation
+
+Since the forecast is a trend indicator, a bigger difference than the normal range would indicate a sudden change of value. So in a way, the z-score is being used as an indicator of predict an outside the acceptable threshold event happening. Thus the z-score can be used in RTI rule to determine when an alert needs to be raised. A larger value filters out smaller spikes and dips.
 
 ### Building the sample
 
@@ -60,7 +68,9 @@ Where,
     Window   : WZScore window size. It means the WZScore will calculate the local ZScore based on the window size. Since local ZScore is only based on this window size, it will be more sensitive to the data changes. For example, a value of 10 will calculate the standard deviation based on last 10 data entries
     cycle    : Controls ZScore window. The model will give 50 predictions based on current data set, the further prediction goes, the un-accurate the prediction will be. so the cycle will let the user how many prediction will be used. For example, a cycle value of 20 means the code will only use 20 prediction entries from each prediction run as forecast.
     
-**Note:** In case if you want to run the application with your custom (modified) jar, modify the URL "https://github.com/ibm-messaging/iot-predictive-analytics-samples/releases/download/0.0.1/IoTSparkAsServiceSample-1.0.0-SNAPSHOT.jar" with your custom build jar url.
+**Note:** In case if you want to run the application with your custom (modified) jar, modify the URL "https://github.com/ibm-messaging/iot-predictive-analytics-samples/releases/download/0.0.1/IoTSparkAsServiceSample-1.0.0-SNAPSHOT.jar" with your custom build jar url (say box, dropbox, etc). In case of dropbox, you may have to change the last part of URL (so instead of ‘?dl=0′, you may have to change it to ‘?dl=1′).
+
+Also, since the IoTSparkAsServiceSample-1.0.0-SNAPSHOT-jar-with-dependencies.jar is built with all the dependencies, you don’t need to specify the dependencies except for the spark-streaming-mqtt-security_2.10-1.3.0-0.0.1.jar.
 
 ----
 
