@@ -64,7 +64,7 @@ public class IoTDataGenerator implements Serializable {
 	         int qos = 2;
              System.out.println(line);
 	         mqttClient.publish(mqtopic,qos,line.getBytes());
-	         Thread.sleep(4000); // Wait 4 seconds
+	         Thread.sleep(2000); // Wait 4 seconds
 	       }
 	       br.close();
 	   } catch (MqttException me) {
