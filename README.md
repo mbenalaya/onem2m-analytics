@@ -29,3 +29,10 @@ Recipe
 Refer to the recipe [Engage Machine Learning for detecting anomalous behaviors of things](https://developer.ibm.com/recipes/tutorials/engage-machine-learning-for-detecting-anomalous-behaviors-of-things/) for more information about the Predictive Analytics and the samples.
 
 ----
+
+### License
+-----------------------
+
+The library is shipped with Eclipse Public License and refer to the [License file] (https://github.com/ibm-messaging/iot-predictive-analytics-samples/blob/master/LICENSE) for more information about the licensing.
+
+----

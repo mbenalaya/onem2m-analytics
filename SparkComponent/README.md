@@ -24,12 +24,12 @@ This application is designed to run on the Apache Spark as a service on Bluemix.
 
 
 
-     %AddJar https://github.com/sathipal/spark-streaming-mqtt-with-security_2.10-1.3.0/releases/download/0.0.1/spark-streaming-mqtt-security_2.10-1.3.0-0.0.1.jar
+     %AddJar https://github.com/ibm-messaging/iot-predictive-analytics-samples/releases/download/0.0.2/IoTSparkAsServiceSample-2.0.0.jar -f
+     %AddJar https://github.com/sathipal/spark-streaming-mqtt-with-security_2.10-1.3.0/releases/download/0.0.1/spark-streaming-mqtt-security_2.10-1.3.0-0.0.1.jar -f
      %AddJar http://central.maven.org/maven2/org/apache/wink/wink-json4j/1.4/wink-json4j-1.4.jar
      %AddJar https://repo.eclipse.org/content/repositories/paho-releases/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.0.2/org.eclipse.paho.client.mqttv3-1.0.2.jar
      %AddJar http://central.maven.org/maven2/org/apache/commons/commons-math/2.2/commons-math-2.2.jar
      %AddJar http://repo1.maven.org/maven2/args4j/args4j/2.0.12/args4j-2.0.12.jar
-     %AddJar https://github.com/ibm-messaging/iot-predictive-analytics-samples/releases/download/0.0.1/IoTSparkAsServiceSample-1.0.0-SNAPSHOT.jar
      
      import com.ibm.iot.iotspark.IoTSparkAsServiceSample
      
