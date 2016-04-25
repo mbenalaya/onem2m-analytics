@@ -268,10 +268,9 @@ public class IoTSparkAsServiceSample implements Serializable {
 	
 	            public Tuple2<String, IoTEvent> call(String payload) {
 	            	
-	            	String[] parts = payload.split(" ");
+	            	String[] parts = payload.split(" " , 2);
 	            	String deviceType = parts[0].split("/")[2];	// DeviceType
 					String deviceId = parts[0].split("/")[4];	// DeviceId
-		        	
 		        	return new Tuple2(deviceId, new IoTEvent(deviceType, deviceId, parts[1]));
 	              }
 	     });
@@ -289,6 +288,7 @@ public class IoTSparkAsServiceSample implements Serializable {
 	    jssc.awaitTermination();
 	  }
   
+  	
   /**
    * Let us use the properties if we are using the Notebook to set the list of Watson IoT Platform Properties
    */

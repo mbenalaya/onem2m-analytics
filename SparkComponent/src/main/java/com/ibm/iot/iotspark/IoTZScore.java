@@ -32,30 +32,30 @@ import org.apache.commons.math3.distribution.*;
  */
 @SuppressWarnings("serial")
 public class IoTZScore implements Serializable{
-	private static ArrayList<Double> entries = new ArrayList<Double>();
-    private static double mu = 0;    //z-score μ
-    private static double temp = 0;  // current sigma mean (xi- u)
+	private ArrayList<Double> entries = new ArrayList<Double>();
+    private double mu = 0;    //z-score μ
+    private double temp = 0;  // current sigma mean (xi- u)
     
     /*
      * The following ZScore params only keep user specified entries -- the window value.
      * The wmu and wtemp are calculated only based on the window size
      */
-    private static ArrayList<Double> wentries = new ArrayList<Double>();
-    private static double wmu = 0;    // window z-score μ
-    private static double wtemp = 0;  // window current sigma mean (xi- u)
-    private static int wsize = 0;
+    private ArrayList<Double> wentries = new ArrayList<Double>();
+    private double wmu = 0;    // window z-score μ
+    private double wtemp = 0;  // window current sigma mean (xi- u)
+    private int wsize = 0;
     
 
-    public static void setWindowSize(int size) {
+    public void setWindowSize(int size) {
     	wsize = size;
     	System.out.println("window size is " + wsize);
     }
     
-    public static void addEntry(double e) {
+    public void addEntry(double e) {
     	entries.add(e);
     }
     
-    public static void updateZScoreMeans(Double a) {
+    public void updateZScoreMeans(Double a) {
 		entries.add(a);
 		double delta = a - mu;
 		mu += delta / entries.size();
@@ -72,7 +72,7 @@ public class IoTZScore implements Serializable{
      * The value move left and mu will be recalculated every time
      * the window move right.
      */
-    public static void updateWindowZScoreMeans(Double a) {
+    public void updateWindowZScoreMeans(Double a) {
     	
     	try {
 	    	if (wentries.size() >= wsize ) {
@@ -103,7 +103,7 @@ public class IoTZScore implements Serializable{
 		
 	}
     
-	public static double zScore(Double x) {
+	public double zScore(Double x) {
 //		double mu = 0;
 //		double temp = 0;
 //		
@@ -127,13 +127,13 @@ public class IoTZScore implements Serializable{
 
 		//zscore
 		double z = (x - mu)/sigma;
-		IoTZScore.updateZScoreMeans(x);
+		updateZScoreMeans(x);
 		return z;
 	}
 	
-	public static double windowZScore(Double x) {
+	public double windowZScore(Double x) {
 		if (wentries.size() < wsize) {
-			IoTZScore.updateWindowZScoreMeans(x);
+			updateWindowZScoreMeans(x);
 			return 0.0;
 		}
 		//calculate sigma -- standard deviation
@@ -144,7 +144,7 @@ public class IoTZScore implements Serializable{
 
 		//zscore
 		double z = (x - wmu)/sigma;
-		IoTZScore.updateWindowZScoreMeans(x);
+		updateWindowZScoreMeans(x);
 		return z;
 	}
 
@@ -155,7 +155,7 @@ public class IoTZScore implements Serializable{
      *
      * @return double a p value
      */
-    public static double calculatePvalue(double aZValue) {
+    public double calculatePvalue(double aZValue) {
         aZValue = aZValue / Math.sqrt(2.0);
         double lPvalue = 0.0;
         try {
@@ -166,7 +166,7 @@ public class IoTZScore implements Serializable{
         return lPvalue;
     }
 
-    public static double zScoreToPercentile(double zScore)
+    public double zScoreToPercentile(double zScore)
 	{
 		double percentile = 0;
 		

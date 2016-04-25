@@ -15,72 +15,84 @@
 package com.ibm.iot.iotdatagenerator;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
+import java.util.TimeZone;
 
-import org.apache.log4j.Logger;
-
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.kohsuke.args4j.CmdLineException;
-
-import com.ibm.iot.iotdatagenerator.CommandLineParser;
-
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.ibm.iotf.client.device.DeviceClient;
 
 @SuppressWarnings("serial")
 public class IoTDataGenerator implements Serializable {
-  static Logger logger = Logger.getLogger(IoTDataGenerator.class.getName());
-  private static SimpleClient mqttClient = new SimpleClient();
- 
-  private static String mqtopic;
+	private final static String PROPERTIES_FILE_NAME = "/device.properties";
+	private final static String DATASET_FILE_NAME = "/testDataSet";
+	
+	private IoTDataGenerator() {
 
-  private IoTDataGenerator() {
-
-  }
+	}
   
-  /**
-   * @param args
-   */
-   public static void main(String[] args) {
-       CommandLineParser parser = null;
-       try {
-	       parser = new CommandLineParser();
-	       parser.parse(args);
-	       mqttClient.connect(parser.getServerURI(), parser.getClientId(), "use-token-auth", parser.getPassword());
-	       mqtopic = parser.getMqttTopic();
-	       System.out.println("MQTT publish topics:" + mqtopic);
+	/**
+	 * @param args
+	 * @throws ParseException 
+	 * @throws UnsupportedEncodingException 
+	 */
+	public static void main(String[] args) throws IOException, ParseException {
+		
+		/**
+		 * Load device properties
+		 */
+		Properties props = new Properties();
+		try {
+			props.load(IoTDataGenerator.class.getResourceAsStream(PROPERTIES_FILE_NAME));
+		} catch (IOException e1) {
+			System.err.println("Not able to read the properties file, exiting..");
+			System.exit(-1);
+		}		
+		
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+		
+		DeviceClient myClient = null;
+		try {
+			//Instantiate and connect to IBM Watson IoT Platform
+			myClient = new DeviceClient(props);
+			myClient.connect();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+			
+		do {
+			InputStream is = IoTDataGenerator.class.getResourceAsStream(DATASET_FILE_NAME);
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			String line = null;
+			JsonParser parser = new JsonParser();
+			// if no more lines the readLine() returns null
+			while ((line = br.readLine()) != null) {
+				// the line will be {"name":"datacenter","temperature":17.47}
+				// The Watson IoT Java client library will add the timestamp while publishing
+				JsonObject event = parser.parse(line).getAsJsonObject();
+				event.addProperty("timestamp", dateFormatGmt.format(new Date()).toString());
+				
+				System.out.println(event);
+				// publish the temperature with QoS 2
+				myClient.publishEvent("temperature", event, 2);
+				try {
+					Thread.sleep(1800);
+				} catch (InterruptedException e) {
+				} 
+			}
+			br.close();
+		} while(true); // publish ever
 	
-	       File file = new File(parser.getDataPath());
-	       FileReader fileReader = new FileReader(file);
-	
-	       BufferedReader br = new BufferedReader(fileReader);
-	
-	       String line = null;
-	
-	       // if no more lines the readLine() returns null
-	       while ((line = br.readLine()) != null) {
-	           //send line
-	         int qos = 2;
-             System.out.println(line);
-	         mqttClient.publish(mqtopic,qos,line.getBytes());
-	         Thread.sleep(2000); // Wait 4 seconds
-	       }
-	       br.close();
-	   } catch (MqttException me) {
-	       me.printStackTrace(System.err);
-	   } catch (CmdLineException ce) {
-	       System.err.println(ce.getMessage());
-	       parser.printUsage(System.err);
-	   } catch(InterruptedException ex) {
-	       ex.printStackTrace(System.err); 
-	   } catch(FileNotFoundException fe) {
-	       fe.printStackTrace(System.err); 
-	   } catch (Exception e) {
-	       e.printStackTrace(System.err); 
-	   } catch (Throwable te) {
-	       te.printStackTrace(System.err);
-	   }
-   }
+	}
 
 }

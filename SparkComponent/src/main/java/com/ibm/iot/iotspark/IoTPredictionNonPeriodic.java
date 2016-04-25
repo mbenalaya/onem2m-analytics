@@ -16,6 +16,9 @@ package com.ibm.iot.iotspark;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.wink.json4j.JSON;
 import org.apache.wink.json4j.JSONArray;
@@ -24,6 +27,12 @@ import org.apache.wink.json4j.JSONObject;
 
 @SuppressWarnings("serial")
 public class IoTPredictionNonPeriodic extends IoTPrediction {
+	
+	/**
+	 * A formatter for ISO 8601 compliant timestamps.
+	 */
+	protected static final DateFormat ISO8601_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
     private JSONObject data = null;
     private int cycle = 1;
     private int windowsize = 0;
@@ -32,8 +41,11 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
 	private int count = 0;
 	private String pdt;
 
+	private IoTZScore zscoreObj = null;
+	
     IoTPredictionNonPeriodic() {
     	System.out.println("Creating new instance of IoTPredictionNonPeriodic");
+    	zscoreObj = new IoTZScore();
     }
     
     /**
@@ -82,7 +94,7 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
         	InputStream dataStream = this.getClass().getResourceAsStream("/historicaldata.json");
 	        data = new JSONObject(dataStream);
 		    windowsize = size;
-		    IoTZScore.setWindowSize(size);
+		    zscoreObj.setWindowSize(size);
 		    cycle = number;
     	} catch(Exception e) {
     		e.printStackTrace();
@@ -124,8 +136,12 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
        if (s == null)
            return null;
       
-       //put device temperature string into prediction dataset
+       // The Watson IoT Java client library sends the data like {d: {payload}}
        JSONObject obj = (JSONObject)JSON.parse(s);
+       if(obj.has("d")) {
+    	   obj = obj.getJSONObject("d");
+       }
+       //put device temperature string into prediction dataset
        if (obj.has("name")&&obj.get("name") != null && 
            obj.has("temperature") && obj.get("temperature") != null )  {
            appendDataSet(obj);
@@ -182,16 +198,23 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
 	          }
 	
 	          double current = obj.getDouble("temperature");
-              double zscore = IoTZScore.zScore(current-forecast);
+              Double zscore = zscoreObj.zScore(current-forecast);
              
-              pdt = new JSONObject();
-              pdt.put("name", obj.getString("name"));
-              pdt.put("temperature", current);
+              pdt = new JSONObject(obj);
               pdt.put("forecast", forecast);
-              pdt.put("zscore", zscore);
+              if(zscore == null || zscore.isNaN()) {
+            	  pdt.put("zscore", 0.0);
+              } else {
+            	  pdt.put("zscore", zscore);
+              }
+              
               if (windowsize > 0) {
-            	  double wzscore = IoTZScore.windowZScore(current-forecast);
-            	  pdt.put("wzscore", wzscore);
+            	  Double wzscore = zscoreObj.windowZScore(current-forecast);
+            	  if(wzscore == null || wzscore.isNaN()) {
+            		  pdt.put("wzscore", 0.0);
+            	  } else {
+            		  pdt.put("wzscore", wzscore);
+            	  }
               } 
               System.out.println("[" + this.count +"] JSON to RTI:" + pdt.toString());
           }
