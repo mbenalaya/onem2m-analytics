@@ -29,7 +29,7 @@ We need these details to connect the device to IBM Watson IoT Platform.
 
 ### Usage
 
-    $ `mvn exec:java -Dexec.mainClass="com.ibm.iot.iotdatagenerator.IoTDataGenerator"`
+    $ mvn exec:java -Dexec.mainClass="com.ibm.iot.iotdatagenerator.IoTDataGenerator"
 
 ### Build & Run the sample using Eclipse
 
