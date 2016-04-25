@@ -51,7 +51,7 @@ You must have installed the [Eclipse Maven plugin](http://www.eclipse.org/m2e/),
 
 ### Build & Run the sample outside eclipse
 
-* * Clone the iot-predictive-samples project using git clone as follows,
+* Clone the iot-predictive-samples project using git clone as follows,
 
     `git clone https://github.com/ibm-messaging/iot-predictive-analytics-samples.git`
     
