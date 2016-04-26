@@ -108,7 +108,7 @@ public class HistoricalDataGenerator
 				
 
 				Response response = backupAndRestoreDB.save(data);
-				if(count % 100 == 0) {
+				if(++count % 100 == 0) {
 					System.out.println("Updated "+ count + " documents so far..");
 				}
 			}
