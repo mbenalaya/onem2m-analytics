@@ -1,15 +1,21 @@
 # iot-predictive-analytics-samples
 
-This project showcases how one can make use of the Predictive Analytics service, available on the IBM Bluemix, to determine the hidden patterns on the events published by IoT devices, on the IBM Watson IoT Platform. 
+The project is split into two parts,
+
+First part showcases how one can make use of the Predictive Analytics service, available on the IBM Bluemix, to determine the hidden patterns on the events published by IoT devices in realtime.
+
+Second part takes the advantage of the data (historical data) produced by the part 1 and analyze/visualize them using Spark and Notebook.
 
 ----
 
 Design and Architecture
 --------------------------
 
-Following are the list of components used in this project,
+####Part#1
 
-![Alt text](./high-level-diagram.PNG?raw=true "High Level Architecture")
+Following are the list of components used in the part#1 of this project, 
+
+![Alt text](./Diagrams/high-level-diagram.PNG?raw=true "High Level Architecture - Part1")
 
 * [Device component](https://github.com/ibm-messaging/iot-predictive-analytics-samples/tree/master/DeviceDataGenerator) - publishes the temperature events to the IBM Watson IoT Platform for every 2 seconds.
 
@@ -19,6 +25,16 @@ Following are the list of components used in this project,
 
 * RTI component - The ZScore will be used in RTI rule to determine when the alert will be raised. A larger value filters out smaller spikes and dips.
 
+####Part#2
+
+Following are the list of components used in the part#2 of this project, 
+
+![Alt text](./Diagrams/recipe2-alone-architecture.PNG?raw=true "High Level Architecture - Part2")
+
+As shown, the [Node-RED application](https://github.com/ibm-watson-iot/predictive-analytics-samples/tree/master/Node-RED) will subscribe to the results (which contains the temperature, forecast temperature, zscore and wzscore values) from the Watson IoT Platform and store them into a Cloudant NoSQL DB. This Cloundat NoSQL DB will act as a historical data storage.
+
+Once the Cloudant NoSQL DB is filled with enough data, this recipe will use the [Jupyter Notebook](http://nbviewer.jupyter.org/github/jupyter/notebook/blob/master/docs/source/examples/Notebook/What%20is%20the%20Jupyter%20Notebook.ipynb) to load the data into the [Spark engine](http://spark.apache.org/) and use [Spark SQL](http://spark.apache.org/docs/latest/sql-programming-guide.html), other graphical libraries to analyze the data and show the results in charts or graphs.
+
 Instruction about how to run the sample can be found in their respective directories.
 
 ----
@@ -26,7 +42,7 @@ Instruction about how to run the sample can be found in their respective directo
 Recipe
 -------------
 
-Refer to the recipe [Engage Machine Learning for detecting anomalous behaviors of things](https://developer.ibm.com/recipes/tutorials/engage-machine-learning-for-detecting-anomalous-behaviors-of-things/) for more information about the Predictive Analytics and the samples.
+* Refer to the part1 recipe [Engage Machine Learning for detecting anomalous behaviors of things](https://developer.ibm.com/recipes/tutorials/engage-machine-learning-for-detecting-anomalous-behaviors-of-things/) for more information about the Predictive Analytics and the samples.
 
 ----
 
