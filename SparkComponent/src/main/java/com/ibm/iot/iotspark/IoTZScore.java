@@ -33,16 +33,16 @@ import org.apache.commons.math3.distribution.*;
 @SuppressWarnings("serial")
 public class IoTZScore implements Serializable{
 	private ArrayList<Double> entries = new ArrayList<Double>();
-    private double mu = 0;    //z-score μ
-    private double temp = 0;  // current sigma mean (xi- u)
+    private double mu = 0.0;    //z-score μ
+    private double temp = 0.0;  // current sigma mean (xi- u)
     
     /*
      * The following ZScore params only keep user specified entries -- the window value.
      * The wmu and wtemp are calculated only based on the window size
      */
     private ArrayList<Double> wentries = new ArrayList<Double>();
-    private double wmu = 0;    // window z-score μ
-    private double wtemp = 0;  // window current sigma mean (xi- u)
+    private double wmu = 0.0;    // window z-score μ
+    private double wtemp = 0.0;  // window current sigma mean (xi- u)
     private int wsize = 0;
     
 

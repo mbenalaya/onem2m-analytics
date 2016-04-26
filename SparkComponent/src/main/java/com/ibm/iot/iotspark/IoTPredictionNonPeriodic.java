@@ -202,18 +202,34 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
              
               pdt = new JSONObject(obj);
               pdt.put("forecast", forecast);
-              if(zscore == null || zscore.isNaN()) {
-            	  pdt.put("zscore", 0.0);
+              if(zscore == null || zscore.isNaN() || zscore == 0) {
+            	  // For some reason the Apache wink is not including the decimal point if its 0
+        		  // and this creates a problem in defining the schema correctly in the notebook
+        		  // i.e it picks up the data as long insteadof double by looking at one record
+        		  // and fails eventually, so use a workaround as shown below,
+            	  pdt.put("zscore", 0.000000000000001);
               } else {
-            	  pdt.put("zscore", zscore);
+            	// Same work-around here as well
+        		  if(!zscore.toString().contains(".")) {
+        			  zscore = Double.parseDouble(zscore + ".000000000000001");
+        		  }
+            	  pdt.put("zscore", zscore.doubleValue());
               }
               
               if (windowsize > 0) {
             	  Double wzscore = zscoreObj.windowZScore(current-forecast);
-            	  if(wzscore == null || wzscore.isNaN()) {
-            		  pdt.put("wzscore", 0.0);
+            	  if(wzscore == null || wzscore.isNaN() || wzscore == 0) {
+            		  // For some reason the Apache wink is not including the decimal point if its 0
+            		  // and this creates a problem in defining the schema correctly in the notebook
+            		  // i.e it picks up the data as long insteadof double by looking at one record
+            		  // and fails eventually, so use a workaround as shown below,
+            		  pdt.put("wzscore", 0.000000000000001);
             	  } else {
-            		  pdt.put("wzscore", wzscore);
+            		  // Same work-around here as well
+            		  if(!wzscore.toString().contains(".")) {
+            			  wzscore = Double.parseDouble(wzscore + ".000000000000001");
+            		  }
+            		  pdt.put("wzscore", wzscore.doubleValue());
             	  }
               } 
               System.out.println("[" + this.count +"] JSON to RTI:" + pdt.toString());

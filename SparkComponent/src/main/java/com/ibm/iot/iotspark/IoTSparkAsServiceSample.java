@@ -174,7 +174,7 @@ public class IoTSparkAsServiceSample implements Serializable {
 				 */
 				for(IoTEvent event : readings) {
 					String forecast = state.getPrediction().predict(event.getEvent());
-					if (forecast != null ) { 
+					if (forecast != null && !forecast.equals("{}")) { 
 						int qos = 2;
 						/**
 						 * Let us use the following topic to publish the predicted score, so that

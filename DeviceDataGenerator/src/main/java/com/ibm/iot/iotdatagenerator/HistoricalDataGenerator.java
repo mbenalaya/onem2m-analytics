@@ -1,14 +1,24 @@
+/**
+ *****************************************************************************
+ Copyright (c) 2016 IBM Corporation and other Contributors.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+ Contributors:
+ Sathiskumar Palaniappan - Initial Contribution
+ *****************************************************************************
+ */
+
 package com.ibm.iot.iotdatagenerator;
 
 
 import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
 import java.util.TimeZone;
 
 import com.cloudant.client.api.CloudantClient;
@@ -18,7 +28,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
-public class HistoricalData
+/**
+ * <p>This class quickly fills the Cloudant NoSQL DB with the resultant data that will
+ * act as a historical data. </br>
+ * 
+ * One can use the Jupyter Notebook to analyze the data in Spark. Refer to the 
+ * <a href="https://github.com/ibm-watson-iot/predictive-analytics-samples/blob/master/Notebook/TimeseriesDataAnalysis.ipynb">Notebook</a> for more information.</p> 
+ */
+public class HistoricalDataGenerator
 {
 	private final static String DATASET_FILE_NAME = "/datacenter1700_nocycle10rebuild50zscorewindow10.csv";
 	
@@ -26,10 +43,28 @@ public class HistoricalData
    {
 	   	Database backupAndRestoreDB;
 	   	
-	   	CloudantClient client = new CloudantClient("https://86d043e2-f688-4b33-9b2d-65537f831214-bluemix:3577f8262a62fd0f62b" +
-	   			"f1bc1394271f8a63e199d58c5b81768da6a3d32e74656@" +
-	   			"86d043e2-f688-4b33-9b2d-65537f831214-bluemix.cloudant.com", "86d043e2-f688-4b33-9b2d-65537f831214-bluemix", 
-	   			"3577f8262a62fd0f62bf1bc1394271f8a63e199d58c5b81768da6a3d32e74656");
+	   	StringBuilder sb = new StringBuilder();
+	   	
+		if(args.length < 2) {
+			System.err.println("Please run the application with Cloudant DB username & Password as follows\n");
+			System.out.println("BackupAndRestoreApplicationSample <username> <password>");
+			System.exit(-1);
+		}
+		
+		String username = args[0];
+		String password = args[1];
+
+		
+	   	sb.append("https://")
+		  .append(username)
+		  .append(":")
+		  .append(password)
+		  .append("@")
+		  .append(username)
+		  .append(".cloudant.com");
+		
+        CloudantClient client = new CloudantClient(sb.toString(), username, password);
+        
 	   	System.out.println("Connected to Cloudant");
 		System.out.println("Server Version: " + client.serverVersion());
 
@@ -40,7 +75,9 @@ public class HistoricalData
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("UTC"));
 		
 		JsonParser parser = new JsonParser();
+		// January 01 2016
 		Date date = new Date(116, 01, 01);
+		// set the date to Jan 18th
 		date.setDate(18);
 		date.setHours(0);
 		date.setMinutes(0);
