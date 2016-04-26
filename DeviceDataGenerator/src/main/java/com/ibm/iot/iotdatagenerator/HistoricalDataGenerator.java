@@ -82,6 +82,7 @@ public class HistoricalDataGenerator
 		date.setHours(0);
 		date.setMinutes(0);
 		int time = 2;
+		long count = 0;
 		for(int i = 0; i < 20; i++) {
 			InputStream is = IoTDataGenerator.class.getResourceAsStream(DATASET_FILE_NAME);
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -107,6 +108,9 @@ public class HistoricalDataGenerator
 				
 
 				Response response = backupAndRestoreDB.save(data);
+				if(count % 100 == 0) {
+					System.out.println("Updated "+ count + " documents so far..");
+				}
 			}
 		}
    }
