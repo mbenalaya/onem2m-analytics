@@ -1,1 +1,0 @@
-java -jar target/IoTDataGenerator-1.0.0-SNAPSHOT.jar --id d:9x3nxw:temperature:rack1 --uri tcp://9x3nxw.messaging.internetofthings.ibmcloud.com:1883 --mqtopic iot-2/evt/data/fmt/json --user use-token-auth --pwd "UnoP1)+KjezZsmAi+g" --datapath testData/testDataSet
