@@ -13,7 +13,7 @@
  *****************************************************************************
  *
  */
-package analytics;
+package core;
 
 import java.io.OutputStream;
 import java.io.PrintStream;

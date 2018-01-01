@@ -15,7 +15,7 @@
  *****************************************************************************
  *
  */
-package analytics;
+package core;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;

@@ -13,7 +13,7 @@
  Kais Ben Youssef - interworking with oneM2M platform (Sensinov)
  *****************************************************************************
  *
- */package analytics;
+ */package core;
 
 import java.io.Serializable;
 import java.util.ArrayList;

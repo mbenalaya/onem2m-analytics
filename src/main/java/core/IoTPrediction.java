@@ -13,7 +13,7 @@
  *****************************************************************************
  *
  */
-package analytics;
+package core;
 
 import java.io.Serializable;
 import java.io.BufferedReader;

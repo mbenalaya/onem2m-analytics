@@ -15,7 +15,7 @@
  *****************************************************************************
  *
  */
-package analytics;
+package core;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
