@@ -20,7 +20,7 @@ $ mvn clean install
 The binary, config and starting script will be generated under the folder "target"
 
 ### Configure the analytics
-You can configure the interworking using the file config.ini
+Use the config.ini file to make your configuration
 
 #### MQTT parameters
 ```sh
