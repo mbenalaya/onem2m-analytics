@@ -141,8 +141,7 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
       
        // The Watson IoT Java client library sends the data like {d: {payload}}
        JSONObject obj = (JSONObject)JSON.parse(s);
-       System.out.println("***************"+obj);
-       System.out.println("***************"+obj.get("value"));
+
        if(obj.has("d")) {
     	   obj = obj.getJSONObject("d");
        }
@@ -177,7 +176,13 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
 	               ret = ret.substring(1, ret.length()-1);
 	           }
 	           JSONObject prediction = new JSONObject(ret);	
-	           pa = (JSONArray) prediction.get("data");
+	           
+	           if(prediction.has("data")){
+	        	   pa = (JSONArray) prediction.get("data");
+	           }else{
+	        	   System.out.println("Wrong prediction output");
+	           }
+	         
 	
 	           if (pa.length() < cycle) {
 	               System.out.println("Wrong prediction output with " + pa.length() + " entries, while prediction cycle is " + cycle);

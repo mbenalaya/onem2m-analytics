@@ -17,13 +17,15 @@
  */
 package core;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
-
 import java.util.List;
 import java.util.Properties;
 
 import scala.Tuple2;
+import mqtt.SimpleClient;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;
@@ -33,16 +35,15 @@ import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
-
 import org.apache.spark.streaming.mqtt.MQTTUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
-
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.kohsuke.args4j.CmdLineException;
 
-
 import com.google.common.base.Optional;
+
+import config.Parameters;
 
 /**
  * 
@@ -55,7 +56,9 @@ import com.google.common.base.Optional;
  */
 @SuppressWarnings("serial")
 public class IoTSparkAsServiceSample implements Serializable {
+	  private final static String PROPERTIES_FILE_NAME = "config.ini";
 	  static Logger logger = Logger.getLogger(IoTSparkAsServiceSample.class.getName());
+	  
 	  
 	  /**
 	   * Watson IoT Platform Parameters
@@ -273,7 +276,7 @@ public class IoTSparkAsServiceSample implements Serializable {
 	            new PairFunction<String, String, IoTEvent>() {
 	
 	            public Tuple2<String, IoTEvent> call(String payload) {
-					System.out.println(payload);
+					//System.out.println(payload);
 	            	String[] parts = payload.split(" " , 2);
 	            	String deviceType = parts[0].split("/")[2];	// DeviceType
 					String deviceId = parts[0].split("/")[4];	// DeviceId
@@ -295,54 +298,7 @@ public class IoTSparkAsServiceSample implements Serializable {
 	  }
   
   	
-  /**
-   * Let us use the properties if we are using the Notebook to set the list of Watson IoT Platform Properties
-   */
-  private static Properties arguments;
   
-  public static void setConfig(String key, String value) {
-	  if(arguments == null) {
-		  arguments = new Properties();
-	  }
-	  arguments.setProperty(key, value);
-  }
-
-  /**
-   * Let us use the properties if we are using the Notebook to set the list of Watson IoT Platform Properties
-   */
-  public static void startStreaming(SparkContext sc, int interval) {
-      try {
-    	  System.out.println("MQTT subscribe topics:" + arguments.getProperty("mqtopic"));
-    	  System.out.println("MQTT uri:" + arguments.getProperty("uri"));
-    	  System.out.println("MQTT appid:" + arguments.getProperty("appid"));
-    	  System.out.println("MQTT apikey:" + arguments.getProperty("apikey"));
-    	  System.out.println("MQTT authtoken:" + arguments.getProperty("authtoken"));
-    	  
-    	  IoTSparkAsServiceSample sample = new IoTSparkAsServiceSample();
-    	  
-   	   	  // Prediction cycle
-   	   	  sample.zScoreWindow = Integer.parseInt(arguments.getProperty("cycle"));
-   	   	  //ZScore window
-   	   	  sample.wZScoreWindow = Integer.parseInt(arguments.getProperty("window"));;
-   	   	  sample.predictiveServiceURL = arguments.getProperty("predictive-service-url");
-          
-          // Watson IoT Platform parameters to read the temperature events from the IoT Device
-	      sample.runPrediction(arguments.getProperty("mqtopic"), arguments.getProperty("uri"), 
-	    		   arguments.getProperty("appid"), arguments.getProperty("apikey"), arguments.getProperty("authtoken"), sc, interval);
-	      
-      } catch (FileNotFoundException fe) {
-          fe.printStackTrace(System.err);
-      } catch (MqttException e) {
-          e.printStackTrace(System.err);
-      } catch (CmdLineException e) {
-          System.err.println(e.getMessage());
-      } catch (Exception e) {
-          e.printStackTrace(System.err); 
-      } catch (Throwable te) {
-          te.printStackTrace(System.err);
-      }
-  }
-
   /**
    * Standalone (outside bluemix) users, also the Bluemix users using spark-submit.sh command can use the following command
    * to run this application.
@@ -360,47 +316,39 @@ public class IoTSparkAsServiceSample implements Serializable {
    * @param args
    */
    public static void main(String[] args) {
-       CommandLineParser parser = null;
+	   
+	   Properties props = new Properties();
+		try {
+			props.load(new FileInputStream(PROPERTIES_FILE_NAME));
+		} catch (IOException e1) {
+			System.err.println("Not able to read the properties file, exiting..");
+			System.exit(1);
+		}
+		new Parameters(props);
+	   
+     
        try {
-    	   int index = 0;
-    	   
-    	   /**
-    	    * The Spark service submit script in Bluemix passes an extra parameters, and hence we 
-    	    * need
-    	    * to skip the first one.
-    	    */
-    	   /*if(!args[0].startsWith("--")) {
-    		   index = 1;
-    	   }*/
-    	   String[] reducedArgs = new String[args.length - index];
-    	   for(int i = index; i < args.length; i++) {
-    		   reducedArgs[i-index] = args[i];
-    	   }
-           parser = new CommandLineParser();
-           
-           parser.parse(reducedArgs);
-
-           System.out.println("MQTT subscribe topics:" + parser.getMqttTopic());
-           System.out.println("MQTT uri:" + parser.getServerURI());
-     	   System.out.println("MQTT appid:" + parser.getAppId());
-     	  System.out.println("MQTT apikey:" + parser.getApiKey());
-     	  System.out.println("MQTT authtoken:" + parser.getAuthToken());
+    	 
+           System.out.println("MQTT subscribe topics:" + Parameters.mqttTopics);
+           System.out.println("MQTT uri:" + Parameters.watsonUri);
+     	   System.out.println("MQTT appid:" + Parameters.watsonAppID);
+     	  System.out.println("MQTT apikey:" + Parameters.watsonApiKey);
+     	  System.out.println("MQTT authtoken:" + Parameters.watsonToken);
 			
      	 
 			
            IoTSparkAsServiceSample sample = new IoTSparkAsServiceSample();
            
-           sample.zScoreWindow = parser.getPredictionCycle();
-           sample.wZScoreWindow = parser.getZScoreWindow();
-           sample.predictiveServiceURL = parser.getPredictiveServiceURL();
+           sample.zScoreWindow = Parameters.predictionCycle;
+           sample.wZScoreWindow = Parameters.zscoreWindow;
+           sample.predictiveServiceURL = Parameters.predictiveServiceUrl;
     
            /**
             * The Spart streaming MQTT util will require the Watson IoT Platform details so that it can receive the data
             * from Watson IoT Platform.
             */
-//           SparkConf sparkConf = new SparkConf().setAppName("IoTSparkAsServiceSample").setMaster("local");
-//           SparkContext sc = new SparkContext(sparkConf);
-           sample.runPrediction(parser.getMqttTopic(), parser.getServerURI(), parser.getAppId(), parser.getApiKey(), parser.getAuthToken(), null, 4);
+
+           sample.runPrediction(Parameters.mqttTopics, Parameters.watsonUri, Parameters.watsonAppID, Parameters.watsonApiKey, Parameters.watsonToken, null, 4);
            
          
 
@@ -409,9 +357,6 @@ public class IoTSparkAsServiceSample implements Serializable {
            fe.printStackTrace(System.err);
        } catch (MqttException e) {
            e.printStackTrace(System.err);
-       } catch (CmdLineException e) {
-           System.err.println(e.getMessage());
-           parser.printUsage(System.err);
        } catch (Exception e) {
            e.printStackTrace(System.err); 
        } catch (Throwable te) {

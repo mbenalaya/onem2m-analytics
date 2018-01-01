@@ -15,7 +15,7 @@
  *****************************************************************************
  *
  */
-package core;
+package mqtt;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
@@ -79,7 +79,7 @@ public class SimpleClient implements MqttCallback {
      */
 	  
 	public void connect(String serverURI, String clientId, String userName, String password) throws MqttException {
-		System.out.println("************************************************"+state);
+		
 		if(state <= PUBLISHED) {
 			return;
 		}
