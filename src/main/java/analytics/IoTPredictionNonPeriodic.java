@@ -11,7 +11,7 @@
  Sathiskumar Palaniappan - Initial Contribution
   
  Mahdi Ben Alaya - interworking with oneM2M platform (Sensinov)
- Kais Ben Youssed - interworking with oneM2M platform (Sensinov)
+ Kais Ben Youssef - interworking with oneM2M platform (Sensinov)
  *****************************************************************************
  *
  */
@@ -106,7 +106,7 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
     }
         
     public void appendDataSet(JSONObject obj) throws JSONException {
-        double d = obj.getDouble("temperature");
+    	double d = Double.parseDouble(obj.get("value").toString());
 
         try {
 	        JSONArray ja = (JSONArray) data.get("data");
@@ -141,12 +141,14 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
       
        // The Watson IoT Java client library sends the data like {d: {payload}}
        JSONObject obj = (JSONObject)JSON.parse(s);
+       System.out.println("***************"+obj);
+       System.out.println("***************"+obj.get("value"));
        if(obj.has("d")) {
     	   obj = obj.getJSONObject("d");
        }
        //put device temperature string into prediction dataset
-       if (obj.has("name")&&obj.get("name") != null && 
-           obj.has("temperature") && obj.get("temperature") != null )  {
+       if (obj.has("id")&&obj.get("id") != null && 
+           obj.has("value") && obj.get("value") != null )  {
            appendDataSet(obj);
            
            /*
@@ -200,7 +202,7 @@ public class IoTPredictionNonPeriodic extends IoTPrediction {
 	              forecast = Double.parseDouble(parts[6]);
 	          }
 	
-	          double current = obj.getDouble("temperature");
+	          double current = Double.parseDouble(obj.get("value").toString());
               Double zscore = zscoreObj.zScore(current-forecast);
              
               pdt = new JSONObject(obj);

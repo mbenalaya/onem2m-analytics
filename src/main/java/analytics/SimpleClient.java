@@ -11,7 +11,7 @@
  Sathiskumar Palaniappan - Initial Contribution
   
  Mahdi Ben Alaya - interworking with oneM2M platform (Sensinov)
- Kais Ben Youssed - interworking with oneM2M platform (Sensinov)
+ Kais Ben Youssef - interworking with oneM2M platform (Sensinov)
  *****************************************************************************
  *
  */

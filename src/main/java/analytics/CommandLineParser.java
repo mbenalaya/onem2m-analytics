@@ -9,7 +9,7 @@
  Li Lin - Initial Contribution
  
  Mahdi Ben Alaya - interworking with oneM2M platform (Sensinov)
- Kais Ben Youssed - interworking with oneM2M platform (Sensinov)
+ Kais Ben Youssef - interworking with oneM2M platform (Sensinov)
  *****************************************************************************
  *
  */
@@ -24,11 +24,11 @@ import org.kohsuke.args4j.Option;
 
 public class CommandLineParser {
 
-	private static final String DEFAULT_MQTT_TOPICS = "iot-2/type/+/id/+/evt/temperature/fmt/+";
-	private static final String DEFAULT_MQTT_SERVER_URI = "ssl://d932lf.messaging.internetofthings.ibmcloud.com:8883";
-	private static final String DEFAULT_APP_ID = "a:d932lf:hammadi3";
-	private static final String DEFAULT_API_KEY = "a-d932lf-drzlj06hnl";
-	private static final String DEFAULT_AUTH_TOKEN = "y6E6a3W!u(NWeeD(DY";
+	private static final String DEFAULT_MQTT_TOPICS = "iot-2/type/+/id/+/evt/event/fmt/+";
+	private static final String DEFAULT_MQTT_SERVER_URI = "ssl://8riy9e.messaging.internetofthings.ibmcloud.com:8883";
+	private static final String DEFAULT_APP_ID = "a:8riy9e:oneM2M123";
+	private static final String DEFAULT_API_KEY = "a-8riy9e-e2ywsxpahe";
+	private static final String DEFAULT_AUTH_TOKEN = "vx)RY+4MW-gqeUwkC8";
 	private static final int DEFAULT_PREDICTION_CYCLE = 10;
 	private static final int DEFAULT_ZSCORE_WINDOW = 10;
 	
@@ -42,7 +42,7 @@ public class CommandLineParser {
 	private String mqttTopic = DEFAULT_MQTT_TOPICS;
 	
 	@Option(name="--predictive-service-url", usage="Predictiv Analytics Service URL")
-	private String pURL = "https://ibm-watson-ml.eu-gb.bluemix.net/pm/v1/score/nocycle20rebuid50?accesskey=mSNymX1ayiKdtyC5kObHMr0lDFyPFNnnOiT6XsH5ZSAz9Yaqc0WKx692OSIUZAOnpvelDBj2EWArRQzCnErs5G6xF7OPG2R5H0oB0w5syog=";
+	private String pURL = "https://ibm-watson-ml.eu-gb.bluemix.net/pm/v1/score/nocycle20rebuid50?accesskey=WBK48sruRl8bZIeO6QkOAmEnm6oGSMf/iF1/rS04YzSVgbRfNuSy0VXKHrtBmmtlpvelDBj2EWArRQzCnErs5G6xF7OPG2R5H0oB0w5syog=";
 	
 	@Option(name="--apikey", usage="IoTF API-Key")
 	private String apiKey = DEFAULT_API_KEY;
