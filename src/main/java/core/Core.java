@@ -55,9 +55,9 @@ import config.Parameters;
  *
  */
 @SuppressWarnings("serial")
-public class IoTSparkAsServiceSample implements Serializable {
+public class Core implements Serializable {
 	  private final static String PROPERTIES_FILE_NAME = "config.ini";
-	  static Logger logger = Logger.getLogger(IoTSparkAsServiceSample.class.getName());
+	  static Logger logger = Logger.getLogger(Core.class.getName());
 	  
 	  
 	  /**
@@ -208,7 +208,7 @@ public class IoTSparkAsServiceSample implements Serializable {
 	     
 	};
 	    
-	private IoTSparkAsServiceSample() {
+	private Core() {
 
     }
   
@@ -337,7 +337,7 @@ public class IoTSparkAsServiceSample implements Serializable {
 			
      	 
 			
-           IoTSparkAsServiceSample sample = new IoTSparkAsServiceSample();
+           Core sample = new Core();
            
            sample.zScoreWindow = Parameters.predictionCycle;
            sample.wZScoreWindow = Parameters.zscoreWindow;
