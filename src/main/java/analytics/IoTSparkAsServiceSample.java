@@ -178,7 +178,7 @@ public class IoTSparkAsServiceSample implements Serializable {
 				for(IoTEvent event : readings) {
 					String forecast = state.getPrediction().predict(event.getEvent());
 					if (forecast != null && !forecast.equals("{}")) { 
-						int qos = 2;
+						int qos = 0;
 						/**
 						 * Let us use the following topic to publish the predicted score, so that
 						 * we can view the same in RTI
@@ -191,7 +191,9 @@ public class IoTSparkAsServiceSample implements Serializable {
 						
 			
 						client.connect(serverURI, clientId, apiKey, authToken);
+			
 						client.publish(publishTopic, qos,forecast.getBytes());
+				
 				    }
 				}
 			} catch (Throwable e) {
@@ -235,7 +237,7 @@ public class IoTSparkAsServiceSample implements Serializable {
   		//Connect if its not connected already
   		System.out.println("Testing the connectivity to Watson IoT Platform ... ");
 		client.connect(serverURI, clientId, apiKey, authToken);
-		client.disconnect();
+		//client.disconnect();
 		
 		System.out.println("Able to connect to Watson IoT Platform successfully !!");
 		

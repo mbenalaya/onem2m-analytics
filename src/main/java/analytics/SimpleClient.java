@@ -47,7 +47,7 @@ public class SimpleClient implements MqttCallback {
 		return instance;
 	}
 	
-	private int state = BEGIN;
+	private int state = 7;
 
 	private static final int BEGIN = 0;
 	private static final int CONNECTED = 1;
@@ -79,7 +79,8 @@ public class SimpleClient implements MqttCallback {
      */
 	  
 	public void connect(String serverURI, String clientId, String userName, String password) throws MqttException {
-		if(state >= CONNECTED) {
+		System.out.println("************************************************"+state);
+		if(state <= PUBLISHED) {
 			return;
 		}
 		
@@ -204,7 +205,7 @@ public class SimpleClient implements MqttCallback {
         // Publish using a non-blocking publisher
         Publisher pub = new Publisher();
         try{
-        pub.doPublish(topicName, qos, payload);
+        	pub.doPublish(topicName, qos, payload);
         }catch(Exception e){
         	e.printStackTrace();
         }
@@ -277,6 +278,7 @@ public class SimpleClient implements MqttCallback {
                 // Publish the message
                 mqtt.publish(topicName, message, "Pub predictive data", pubListener);
             } catch (MqttException e) {
+            	e.printStackTrace();
                 state = ERROR;
                 donext = true;
                 ex = e;
