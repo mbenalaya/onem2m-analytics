@@ -44,13 +44,14 @@ Execute the following script to start the analytics
 ```sh
 $ ./start.sh
 ```
+<!--
 ## Demonstration
-
 ## 1. [Start a oneM2M CSE](https://github.com/mbenalaya/onem2m-watson/blob/master/README.md#start-a-onem2m-cse)
 ## 2. [Start the oneM2M Watson IoT interworking](https://github.com/mbenalaya/onem2m-watson/blob/master/README.md#start-the-onem2m-watson-iot-interworking)
 ## 3. Start the oneM2M analytics
 Follow the steps explained in the [Getting Started](https://github.com/mbenalaya/onem2m-analytics/blob/master/README.md##getting-started) section to run the analytics
 ## 4. [Visualize your data and predicition on Watson IoT Platform](https://github.com/mbenalaya/onem2m-watson/blob/master/README.md#visualize-your-data-on-watson-iot-platform)
+-->
 
 ## License
 Open sourced under the Eclipse Public License 1.0.
