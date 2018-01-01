@@ -44,8 +44,8 @@ Execute the following script to start the analytics
 ```sh
 $ ./start.sh
 ```
-## Demonstration
 <!--
+## Demonstration
 ## 1. [Start a oneM2M CSE](https://github.com/mbenalaya/onem2m-watson/blob/master/README.md#start-a-onem2m-cse)
 ## 2. [Start the oneM2M Watson IoT interworking](https://github.com/mbenalaya/onem2m-watson/blob/master/README.md#start-the-onem2m-watson-iot-interworking)
 ## 3. Start the oneM2M analytics
