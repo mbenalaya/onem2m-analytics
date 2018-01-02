@@ -25,19 +25,19 @@ Use the config.ini file to make your configuration
 #### MQTT parameters
 ```sh
 MQTT_TOPICS = iot-2/type/+/id/+/evt/event/fmt/+
-MQTT_SERVER_URI = ssl://d932lf.messaging.internetofthings.ibmcloud.com:8883
+MQTT_SERVER_URI = ssl://8riy9e.messaging.internetofthings.ibmcloud.com:8883
 ```
 #### Watson IoT Platform parameters
 ```sh
-APP_ID = a:d932lf:oneM2M123
-API_KEY = a-d932lf-pw0hqouwfb
-AUTH_TOKEN = 2Q!9lYAi1QgltK)0D@
+APP_ID = a:8riy9e:oneM2M123
+API_KEY = a-8riy9e-e2ywsxpahe
+AUTH_TOKEN =  vx)RY+4MW-gqeUwkC8
 ```
 #### Prediction parameters
 ```sh
 PREDICTION_CYCLE = 10
 ZSCORE_WINDOW = 10
-PREDICTIVE_SERVICE_URL = https://ibm-watson-ml.eu-gb.bluemix.net/pm/v1/score/nocycle20rebuid50?accesskey=/032nxDVhkS6mCwAbCXrNR2UvzjCck/7E/Kgci2LS1/owzOSQ1q8Bmum2EAGlvgJpvelDBj2EWArRQzCnErs5G6xF7OPG2R5H0oB0w5syog=
+PREDICTIVE_SERVICE_URL = https://ibm-watson-ml.eu-gb.bluemix.net/pm/v1/score/nocycle20rebuid50?accesskey=EzjIR1yqpeSLI1k8XXXO1x8hwYLRGn9Hb4/5XXgqYG5wWJAm8oHM3dFJPzSvZ0fKc1AbOE1UW5e5NZRAC6JLeJm4UhduKiR4fCfmGQLC1t8=
 ```
 ### Start the analytics
 Execute the following script to start the analytics
