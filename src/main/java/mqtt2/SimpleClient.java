@@ -15,7 +15,7 @@
  *****************************************************************************
  *
  */
-package mqtt;
+package mqtt2;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;

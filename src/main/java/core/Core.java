@@ -17,6 +17,7 @@
  */
 package core;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Properties;
 
 import scala.Tuple2;
-import mqtt.SimpleClient;
+import mqtt2.SimpleClient;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;
@@ -39,9 +40,9 @@ import org.apache.spark.streaming.mqtt.MQTTUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
 import org.eclipse.paho.client.mqttv3.MqttException;
-import org.kohsuke.args4j.CmdLineException;
 
 import com.google.common.base.Optional;
+import com.typesafe.config.ConfigFactory;
 
 import config.Parameters;
 
@@ -256,7 +257,7 @@ public class Core implements Serializable {
 	
 	    
 	    if(sc == null) {
-		    SparkConf sparkConf = new SparkConf().setAppName("IoTSparkAsServiceSample").setMaster("local[*]");
+		    SparkConf sparkConf = new SparkConf().setAppName("Core").setMaster("local[*]");
 		    sc = new SparkContext(sparkConf);
 	    }
 	    
@@ -316,7 +317,6 @@ public class Core implements Serializable {
    * @param args
    */
    public static void main(String[] args) {
-	   
 	   Properties props = new Properties();
 		try {
 			props.load(new FileInputStream(PROPERTIES_FILE_NAME));
@@ -348,10 +348,10 @@ public class Core implements Serializable {
             * from Watson IoT Platform.
             */
 
-           sample.runPrediction(Parameters.mqttTopics, Parameters.watsonUri, Parameters.watsonAppID, Parameters.watsonApiKey, Parameters.watsonToken, null, 4);
-           
-         
 
+		    
+           sample.runPrediction(Parameters.mqttTopics, Parameters.watsonUri, Parameters.watsonAppID, Parameters.watsonApiKey, Parameters.watsonToken, null, 4);
+          
 			
        } catch (FileNotFoundException fe) {
            fe.printStackTrace(System.err);
