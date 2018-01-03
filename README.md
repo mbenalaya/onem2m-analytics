@@ -17,7 +17,7 @@ Build the project using the following command
 ```sh
 $ mvn clean install
 ```
-The binary, config and starting script will be generated under the folder "target"
+The binary and config files will be generated under the folder "target"
 
 ### Configure the analytics
 Use the config.ini file to make your configuration
@@ -40,9 +40,9 @@ ZSCORE_WINDOW = 10
 PREDICTIVE_SERVICE_URL = https://ibm-watson-ml.eu-gb.bluemix.net/pm/v1/score/nocycle20rebuid50?accesskey=EzjIR1yqpeSLI1k8XXXO1x8hwYLRGn9Hb4/5XXgqYG5wWJAm8oHM3dFJPzSvZ0fKc1AbOE1UW5e5NZRAC6JLeJm4UhduKiR4fCfmGQLC1t8=
 ```
 ### Start the analytics
-Execute the following script to start the analytics
+Execu the following script to start the analytics
 ```sh
-$ ./start.sh
+$ mvn exec:java 
 ```
 <!--
 ## Demonstration
