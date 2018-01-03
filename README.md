@@ -40,7 +40,7 @@ ZSCORE_WINDOW = 10
 PREDICTIVE_SERVICE_URL = https://ibm-watson-ml.eu-gb.bluemix.net/pm/v1/score/nocycle20rebuid50?accesskey=EzjIR1yqpeSLI1k8XXXO1x8hwYLRGn9Hb4/5XXgqYG5wWJAm8oHM3dFJPzSvZ0fKc1AbOE1UW5e5NZRAC6JLeJm4UhduKiR4fCfmGQLC1t8=
 ```
 ### Start the analytics
-Execu the following script to start the analytics
+Execute the following command from the folde onem2m-analytics to start the analytics
 ```sh
 $ mvn exec:java 
 ```
